@@ -1,0 +1,40 @@
+{
+  "executionRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}-exec-role-${STAGE}",
+  "containerDefinitions": [
+    {
+      "entryPoint": [],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ],
+      "command": [],
+      "cpu": 0,
+      "environment": [],
+      "ulimits": [],
+      "dnsServers": [],
+      "mountPoints": [],
+      "secrets": [],
+      "dockerSecurityOptions": [],
+      "volumesFrom": [],
+      "image": "${AWS_REPOSITORY_URI}/${IMAGE_NAME}",
+      "essential": true,
+      "links": [],
+      "extraHosts": [],
+      "dockerLabels": {},
+      "systemControls": [],
+      "name": "${CONTAINER_NAME}"
+    }
+  ],
+  "placementConstraints": [],
+  "memory": "2048",
+  "taskRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}-task-role-${STAGE}",
+  "family": "${FAMILY_NAME}",
+
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "1024",
+  "volumes": []
+}

@@ -1,0 +1,1 @@
+FROM erikrehn98/empty-fargate
