@@ -19,7 +19,7 @@
       "secrets": [],
       "dockerSecurityOptions": [],
       "volumesFrom": [],
-      "image": "${AWS_REPOSITORY_URI}/${IMAGE_NAME}",
+      "image": "${ECR_URL}",
       "essential": true,
       "links": [],
       "extraHosts": [],
@@ -32,7 +32,6 @@
   "memory": "2048",
   "taskRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}-task-role-${STAGE}",
   "family": "${FAMILY_NAME}",
-
   "requiresCompatibilities": ["FARGATE"],
   "networkMode": "awsvpc",
   "cpu": "1024",
