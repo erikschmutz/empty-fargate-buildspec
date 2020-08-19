@@ -2,6 +2,16 @@
   "executionRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}-exec-role-${STAGE}",
   "containerDefinitions": [
     {
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": [],
+        "options": {
+          "awslogs-group": "${LOG_GROUP_NAME}",
+          "awslogs-region": "${AWS_DEFAULT_REGION}",
+          "awslogs-stream-prefix": "${NAME}-${STAGE}"
+        }
+      },
+
       "entryPoint": [],
       "portMappings": [
         {
