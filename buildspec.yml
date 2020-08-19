@@ -3,16 +3,19 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      node: 14
+      node: 12
 
-  pre-build:
+  pre_build:
     # Installs and exports some varibles from the .fargate config file
-    - npm i -g envgate
-    - export IMAGE_NAME = $(envgate -t .fargate/config.json -e STAGE $STAGE --get IMAGE_NAME)
-    - export ECR_URL = $(envgate -t .fargate/config.json -e STAGE $STAGE --get IMAGE_NAME)
-    - export CLUSTER_NAME = $(envgate -t .fargate/config.json -e STAGE $STAGE --get CLUSTER_NAME)
-    - export SERVICE_NAME = $(envgate -t .fargate/config.json -e STAGE $STAGE --get SERVICE_NAME)
-    - export FAMILY_NAME = $(envgate -t .fargate/config.json -e STAGE $STAGE --get FAMILY_NAME)
+    commands:
+      - npm i -g envgate
+      - export TAG=$CODEBUILD_BUILD_NUMBER
+      - export CONFIG=.fargate/config.json
+      - export IMAGE_NAME=$(envgate -t $CONFIG --get IMAGE_NAME)
+      - export ECR_URL=$(envgate -t $CONFIG --get ECR_URL)
+      - export CLUSTER_NAME=$(envgate -t $CONFIG --get CLUSTER_NAME)
+      - export SERVICE_NAME=$(envgate -t $CONFIG --get SERVICE_NAME)
+      - export FAMILY_NAME=$(envgate -t $CONFIG --get FAMILY_NAME)
 
   build:
     commands:
@@ -26,5 +29,6 @@ phases:
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - docker tag $IMAGE_NAME $ECR_URL
       - docker push $ECR_URL
-      - TASK_VERSION=$(aws ecs register-task-definition --family $FAMILY_NAME --cli-input-json file://task-definition.json | jq --raw-output '.taskDefinition.revision')
+      - cat task-definition.out.json
+      - TASK_VERSION=$(aws ecs register-task-definition --family $FAMILY_NAME --cli-input-json file://task-definition.out.json | jq --raw-output '.taskDefinition.revision')
       - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $FAMILY_NAME:$TASK_VERSION
