@@ -12,7 +12,18 @@
       ],
       "command": [],
       "cpu": 0,
-      "environment": [],
+      "environment": [
+        {
+          "name": "DB_USER",
+          "value": "${VALUE}"
+        }
+      ],
+      "secret": [
+        {
+          "valueFrom": "arn:aws:ssm:${AWS_DEFAULT_REGION}:${AWS_PROFILE}:parameter/database/${STAGE}/password",
+          "name": "DB_PASS"
+        }
+      ],
       "ulimits": [],
       "dnsServers": [],
       "mountPoints": [],
