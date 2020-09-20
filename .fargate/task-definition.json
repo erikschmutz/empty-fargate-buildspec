@@ -1,5 +1,5 @@
 {
-  "executionRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}-exec-role-${STAGE}",
+  "executionRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}ExecRole${STAGE}",
   "containerDefinitions": [
     {
       "logConfiguration": {
