@@ -2,12 +2,12 @@
   "AWS_PROFILE": "XXXXYYYYZZZZ",
   "AWS_DEFAULT_REGION": "eu-west-1",
   "NAME": "NAME_OF_THE_SERVICE",
-  "CLUSTER_NAME": "NAME_OF_THE_CLUSTER-${STAGE}",
 
-  "SERVICE_NAME": "${NAME}-service-${STAGE}",
-  "FAMILY_NAME": "${NAME}-family-${STAGE}",
-  "CONTAINER_NAME": "${NAME}-container-${STAGE}",
-  "IMAGE_NAME": "${NAME}-${STAGE}",
-  "ECR_URL": "${AWS_PROFILE}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}:${TAG}",
-  "LOG_GROUP_NAME": "${NAME}-log-group-${STAGE}"
+  "CLUSTER_NAME": "EnunityEcsCluster${STAGE}",
+  "SERVICE_NAME": "${NAME}${STAGE}",
+  "FAMILY_NAME": "${NAME}Familiy${STAGE}",
+  "CONTAINER_NAME": "${NAME}Container${STAGE}",
+  "IMAGE_NAME": "enunity-tasks-service-${STAGE_LOWERCASE}",
+  "ECR_URL": "${AWS_PROFILE}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:${TAG}",
+  "LOG_GROUP_NAME": "${NAME}LogGroup${STAGE}"
 }

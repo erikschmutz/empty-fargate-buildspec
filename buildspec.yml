@@ -11,22 +11,25 @@ phases:
       - npm i -g envgate
       - export TAG=$CODEBUILD_BUILD_NUMBER
       - export CONFIG=.fargate/config.json
-      - export IMAGE_NAME=$(envgate -t $CONFIG --get IMAGE_NAME)
-      - export ECR_URL=$(envgate -t $CONFIG --get ECR_URL)
-      - export CLUSTER_NAME=$(envgate -t $CONFIG --get CLUSTER_NAME)
-      - export SERVICE_NAME=$(envgate -t $CONFIG --get SERVICE_NAME)
-      - export FAMILY_NAME=$(envgate -t $CONFIG --get FAMILY_NAME)
+      - export STAGE_CONFIG=.fargate/env.$STAGE.json
+      - export IMAGE_NAME=$(envgate -f $STAGE_CONFIG -t $CONFIG --get IMAGE_NAME)
+      - export ECR_URL=$(envgate -f $STAGE_CONFIG -t $CONFIG --get ECR_URL)
+      - export CLUSTER_NAME=$(envgate -f $STAGE_CONFIG -t $CONFIG --get CLUSTER_NAME)
+      - export SERVICE_NAME=$(envgate -f $STAGE_CONFIG -t $CONFIG --get SERVICE_NAME)
+      - export FAMILY_NAME=$(envgate -f $STAGE_CONFIG -t $CONFIG --get FAMILY_NAME)
 
   build:
     commands:
       # Build you application here
+      - echo $IMAGE_NAME
       - docker build -t $IMAGE_NAME .
 
   post_build:
     commands:
       - echo "building new taskdef with envgate...."
-      - envgate -f .fargate/config.json -e STAGE $STAGE -o task-definition.out.json -t .fargate/task-definition.json
+      - envgate -f .fargate/env.$STAGE.json -f .fargate/config.json -o task-definition.out.json -t .fargate/task-definition.json
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - echo $ECR_URL
       - docker tag $IMAGE_NAME $ECR_URL
       - docker push $ECR_URL
       - cat task-definition.out.json
