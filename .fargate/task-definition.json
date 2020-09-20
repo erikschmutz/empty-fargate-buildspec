@@ -30,7 +30,7 @@
       ],
       "secret": [
         {
-          "valueFrom": "arn:aws:ssm:${AWS_DEFAULT_REGION}:${AWS_PROFILE}:parameter/database/${STAGE}/password",
+          "valueFrom": "arn:aws:ssm:${AWS_DEFAULT_REGION}:${AWS_PROFILE}:parameter/database/${STAGE_LOWERCASE}/password",
           "name": "DB_PASS"
         }
       ],
@@ -51,7 +51,7 @@
   ],
   "placementConstraints": [],
   "memory": "2048",
-  "taskRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}-task-role-${STAGE}",
+  "taskRoleArn": "arn:aws:iam::${AWS_PROFILE}:role/${NAME}TaskRole${STAGE}",
   "family": "${FAMILY_NAME}",
   "requiresCompatibilities": ["FARGATE"],
   "networkMode": "awsvpc",
